@@ -17,6 +17,7 @@ fun nsfConnect(year: Int = 70): ResultSet {
     val conn = dataSource.connection
     println("Connected")
 
+    println("Fetching data...")
     val stmt = conn.createStatement()
     return stmt.run {
         execute("use acmDB;")
