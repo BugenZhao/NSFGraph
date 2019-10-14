@@ -2,8 +2,8 @@ package com.bugenzhao.nsf;
 
 import org.gephi.graph.api.*;
 import org.gephi.project.api.ProjectController;
-import org.openide.util.Lookup;
 import org.gephi.project.api.Workspace;
+import org.openide.util.Lookup;
 
 public class GephiTest {
     public static void main(String[] args) {

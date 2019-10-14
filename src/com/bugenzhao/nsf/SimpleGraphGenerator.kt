@@ -3,7 +3,8 @@ package com.bugenzhao.nsf
 import org.gephi.graph.api.GraphController
 import org.gephi.io.exporter.api.ExportController
 import org.openide.util.Lookup
-import java.io.*
+import java.io.File
+import java.io.IOException
 
 
 fun main() {

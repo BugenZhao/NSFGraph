@@ -1,35 +1,18 @@
 package com.bugenzhao.nsf
 
-import org.gephi.appearance.api.*
+import org.gephi.appearance.api.AppearanceController
+import org.gephi.appearance.api.AppearanceModel
+import org.gephi.appearance.api.PartitionFunction
+import org.gephi.appearance.api.RankingFunction
+import org.gephi.appearance.plugin.PartitionElementColorTransformer
+import org.gephi.appearance.plugin.RankingNodeSizeTransformer
+import org.gephi.appearance.plugin.palette.PaletteManager
 import org.gephi.graph.api.GraphController
 import org.gephi.io.exporter.api.ExportController
-import org.openide.util.Lookup
-import java.io.*
-import org.gephi.statistics.plugin.GraphDistance
-import org.gephi.appearance.plugin.PartitionElementColorTransformer
-import org.gephi.appearance.plugin.RankingElementColorTransformer
-import org.gephi.appearance.plugin.RankingNodeSizeTransformer
-import java.awt.Color
-import org.gephi.appearance.plugin.palette.PaletteManager
 import org.gephi.layout.plugin.forceAtlas2.ForceAtlas2
-import org.gephi.layout.plugin.forceAtlas2.ForceAtlas2Builder
-import java.lang.System.getProperties
-import org.gephi.preview.types.DependantOriginalColor
-import java.awt.event.ComponentEvent
-import java.awt.event.ComponentAdapter
-import com.sun.java.accessibility.util.AWTEventMonitor.addComponentListener
-import org.apache.batik.ext.awt.image.rendered.TileCache.setSize
-import org.gephi.io.exporter.preview.PNGExporter
-import org.gephi.preview.api.*
-import java.awt.BorderLayout
-import javax.swing.JFrame
-import org.gephi.preview.api.RenderTarget.G2D_TARGET
-import org.gephi.preview.presets.BlackBackground
-import org.gephi.preview.presets.DefaultCurved
-import org.gephi.preview.spi.PreviewUI
-import javax.imageio.ImageIO
-import java.awt.image.BufferedImage
-import javax.swing.Spring.height
+import org.openide.util.Lookup
+import java.io.File
+import java.io.IOException
 
 
 fun main() {
