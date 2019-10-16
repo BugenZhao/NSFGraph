@@ -23,10 +23,12 @@ fun nsfConnect(year: Int = 70): ResultSet {
         execute("use acmDB;")
         executeQuery("""
             SELECT
-	            DISTINCT a.ID, a.Title, b.InstitutionID, c.`Name`
+	            DISTINCT a.ID, a.Title, b.InstitutionID, c.`Name`, d.AwardInstrumentID, e.Value
             FROM Award a
             INNER JOIN Award_Institution b ON a.ID = b.AwardID 
             INNER JOIN Institution c ON b.InstitutionID = c.ID 
+            INNER JOIN Award_AwardInstrument d ON a.ID = d.AwardID
+            INNER JOIN AwardInstrument e ON d.AwardInstrumentID = e.ID
             WHERE
 	            a.ID LIKE "$year%";
         """.trimIndent())

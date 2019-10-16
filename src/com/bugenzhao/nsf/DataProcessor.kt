@@ -2,15 +2,20 @@ package com.bugenzhao.nsf
 
 import com.bugenzhao.nsf.nodes.Award
 import com.bugenzhao.nsf.nodes.Institution
+import com.bugenzhao.nsf.nodes.Instrument
 
 data class ProcessedData(val awards: List<Award>,
-                         val insts: List<Institution>,
-                         val relationships: Map<Award, Institution>) {}
+                         val institutions: List<Institution>,
+                         val instruments: List<Instrument>,
+                         val institutionRel: Map<Award, Institution>,
+                         val instrumentRel: Map<Award, Instrument>) {}
 
 fun dataProcess(year: Int): ProcessedData {
     val awards = mutableListOf<Award>()
-    val insts = mutableListOf<Institution>()
-    val relationships = mutableMapOf<Award, Institution>()
+    val institutions = mutableListOf<Institution>()
+    val instruments = mutableListOf<Instrument>()
+    val institutionRel = mutableMapOf<Award, Institution>()
+    val instrumentRel = mutableMapOf<Award, Instrument>()
 
     val rs = nsfConnect(year);
     println("Start to process the data...")
@@ -19,18 +24,23 @@ fun dataProcess(year: Int): ProcessedData {
         while (next()) {
             val awardID = getInt("ID")
             val awardTitle = getString("Title")
-            val instID = getInt("InstitutionID")
-            val instName = getString("Name")
+            val institutionID = getInt("InstitutionID") + 10000
+            val institutionName = getString("Name")
+            val instrumentID = getInt("AwardInstrumentID")
+            val instrumentValue = getString("Value")
 
             val award = Award(awardID, awardTitle)
-            val inst = Institution(instID, instName)
+            val institution = Institution(institutionID, institutionName)
+            val instrument = Instrument(instrumentID, instrumentValue)
 
             awards.add(award)
-            insts.add(inst)
-            relationships[award] = inst
+            institutions.add(institution)
+            instruments.add(instrument)
+            institutionRel[award] = institution
+            instrumentRel[award] = instrument
         }
     }
 
     println("Data processed")
-    return ProcessedData(awards, insts, relationships);
+    return ProcessedData(awards, institutions, instruments, institutionRel, instrumentRel)
 }

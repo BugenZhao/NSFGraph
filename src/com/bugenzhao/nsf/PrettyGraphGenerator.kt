@@ -7,6 +7,8 @@ import org.gephi.appearance.api.RankingFunction
 import org.gephi.appearance.plugin.PartitionElementColorTransformer
 import org.gephi.appearance.plugin.RankingNodeSizeTransformer
 import org.gephi.appearance.plugin.palette.PaletteManager
+import org.gephi.filters.api.FilterController
+import org.gephi.filters.plugin.partition.PartitionBuilder.NodePartitionFilter
 import org.gephi.graph.api.GraphController
 import org.gephi.io.exporter.api.ExportController
 import org.gephi.layout.plugin.forceAtlas2.ForceAtlas2
@@ -31,7 +33,7 @@ fun main() {
     val degreeRanking = appearanceModel.getNodeFunction(undirectedGraph, AppearanceModel.GraphFunction.NODE_DEGREE, RankingNodeSizeTransformer::class.java) as RankingFunction
     degreeRanking.getTransformer<RankingNodeSizeTransformer>().apply {
         minSize = 20F
-        maxSize = 100F
+        maxSize = 80F
     }
     val typePartition = appearanceModel.getNodeFunction(undirectedGraph, graphModel.nodeTable.getColumn("type"), PartitionElementColorTransformer::class.java) as PartitionFunction
     typePartition.partition.apply {
@@ -44,12 +46,39 @@ fun main() {
         transform(typePartition)
     }
 
+//    val filterController = Lookup.getDefault().lookup(FilterController::class.java)
+//    val partitionFilter = NodePartitionFilter(graphModel.nodeTable.getColumn("type"), appearanceModel)
+//
+//    partitionFilter.unselectAll()
+//    partitionFilter.addPart("Institution")
+//    var query2 = filterController.createQuery(partitionFilter)
+//    var view2 = filterController.filter(query2)
+//    graphModel.visibleView = view2
+//    degreeRanking.getTransformer<RankingNodeSizeTransformer>().apply {
+//        minSize = 25F
+//        maxSize = 60F
+//    }
+//    appearanceController.transform(degreeRanking)
+//
+//    partitionFilter.unselectAll()
+//    partitionFilter.addPart("Instrument")
+//    query2 = filterController.createQuery(partitionFilter)
+//    view2 = filterController.filter(query2)
+//    graphModel.visibleView = view2
+//    degreeRanking.getTransformer<RankingNodeSizeTransformer>().apply {
+//        minSize = 80F
+//        maxSize = 120F
+//    }
+//    appearanceController.transform(degreeRanking)
+//
+//    graphModel.visibleView = graphModel.createView()
+
 
     println("Applying layout...")
     val layout = ForceAtlas2(null).apply {
         setGraphModel(graphModel)
         resetPropertiesValues()
-        scalingRatio = 80.0
+        scalingRatio = 200.0
         isStrongGravityMode = true
         gravity = 1.0
         isLinLogMode = false
