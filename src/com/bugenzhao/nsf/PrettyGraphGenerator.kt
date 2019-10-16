@@ -7,8 +7,6 @@ import org.gephi.appearance.api.RankingFunction
 import org.gephi.appearance.plugin.PartitionElementColorTransformer
 import org.gephi.appearance.plugin.RankingNodeSizeTransformer
 import org.gephi.appearance.plugin.palette.PaletteManager
-import org.gephi.filters.api.FilterController
-import org.gephi.filters.plugin.partition.PartitionBuilder.NodePartitionFilter
 import org.gephi.graph.api.GraphController
 import org.gephi.io.exporter.api.ExportController
 import org.gephi.layout.plugin.forceAtlas2.ForceAtlas2
@@ -17,9 +15,8 @@ import java.io.File
 import java.io.IOException
 
 
-fun main() {
-    val year = readLine()?.toInt()!! % 100
-
+fun prettyGraphGenerate(_year: Int) {
+    val year = _year % 100
     val pc = graphGenerate(year);
     val workspace = pc.currentWorkspace
     val graphModel = Lookup.getDefault().lookup(GraphController::class.java).getGraphModel(workspace)
@@ -65,6 +62,7 @@ fun main() {
 //    query2 = filterController.createQuery(partitionFilter)
 //    view2 = filterController.filter(query2)
 //    graphModel.visibleView = view2
+//    graphModel.getGraph(view) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //    degreeRanking.getTransformer<RankingNodeSizeTransformer>().apply {
 //        minSize = 80F
 //        maxSize = 120F
@@ -100,8 +98,6 @@ fun main() {
     val ec = Lookup.getDefault().lookup(ExportController::class.java).apply {
         try {
             exportFile(File("19$year.gexf"))
-//            exportFile(File("19$year.svg"))
-//            exportFile(File("19$year.png"))
         } catch (ex: IOException) {
             ex.printStackTrace()
             return
@@ -110,4 +106,10 @@ fun main() {
 
     println("Exported")
     println("\nALL DONE")
+}
+
+
+fun main() {
+    val year = readLine()?.toInt()!! % 100
+    prettyGraphGenerate(year)
 }
