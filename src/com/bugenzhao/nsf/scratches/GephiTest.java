@@ -1,4 +1,4 @@
-package scratch;
+package com.bugenzhao.nsf.scratches;
 
 import org.gephi.graph.api.*;
 import org.gephi.project.api.ProjectController;
