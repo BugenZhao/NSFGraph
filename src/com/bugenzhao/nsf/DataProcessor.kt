@@ -3,6 +3,7 @@ package com.bugenzhao.nsf
 import com.bugenzhao.nsf.nodes.Award
 import com.bugenzhao.nsf.nodes.Institution
 import com.bugenzhao.nsf.nodes.Instrument
+import com.bugenzhao.nsf.utils.computeRunningTime
 
 data class ProcessedData(val awards: List<Award>,
                          val institutions: List<Institution>,
@@ -10,26 +11,31 @@ data class ProcessedData(val awards: List<Award>,
                          val institutionRel: Map<Award, Institution>,
                          val instrumentRel: Map<Award, Instrument>) {}
 
-fun dataProcess(year: Int): ProcessedData {
+fun dataProcess(startYear: Int, endYear: Int): ProcessedData {
     val awards = mutableListOf<Award>()
     val institutions = mutableListOf<Institution>()
     val instruments = mutableListOf<Instrument>()
     val institutionRel = mutableMapOf<Award, Institution>()
     val instrumentRel = mutableMapOf<Award, Instrument>()
 
-    val rs = nsfConnect(year);
+    val rs = computeRunningTime {
+        nsfConnect(startYear, endYear)
+    }
+
     println("Start to process the data...")
 
     rs.run {
         while (next()) {
             val awardID = getInt("ID")
             val awardTitle = getString("Title")
-            val institutionID = getInt("InstitutionID") + 10000
+            val effectiveDate = getString("EffectiveDate")
+            val expirationDate = getString("ExpirationDate")
+            val institutionID = getInt("InstitutionID") + 100000
             val institutionName = getString("Name")
             val instrumentID = getInt("AwardInstrumentID")
             val instrumentValue = getString("Value")
 
-            val award = Award(awardID, awardTitle)
+            val award = Award(awardID, awardTitle, effectiveDate, expirationDate)
             val institution = Institution(institutionID, institutionName)
             val instrument = Instrument(instrumentID, instrumentValue)
 

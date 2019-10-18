@@ -1,5 +1,6 @@
 package com.bugenzhao.nsf
 
+import com.bugenzhao.nsf.utils.computeRunningTime
 import org.gephi.appearance.api.AppearanceController
 import org.gephi.appearance.api.AppearanceModel
 import org.gephi.appearance.api.PartitionFunction
@@ -13,11 +14,15 @@ import org.gephi.layout.plugin.forceAtlas2.ForceAtlas2
 import org.openide.util.Lookup
 import java.io.File
 import java.io.IOException
+import java.util.*
 
 
-fun prettyGraphGenerate(_year: Int) {
-    val year = _year % 100
-    val pc = graphGenerate(year);
+fun prettyGraphGenerate(startYear: Int, endYear: Int = startYear) {
+    require(endYear >= startYear)
+    var pc = graphGenerate(startYear, endYear);
+    if (endYear > startYear) {
+        pc = toDynamic(pc)
+    }
     val workspace = pc.currentWorkspace
     val graphModel = Lookup.getDefault().lookup(GraphController::class.java).getGraphModel(workspace)
     val undirectedGraph = graphModel.undirectedGraph
@@ -85,9 +90,14 @@ fun prettyGraphGenerate(_year: Int) {
         threadsCount = 10
         initAlgo()
     }
-    repeat(1000) {
-        layout.goAlgo()
-    }.run { layout.endAlgo() }
+
+    val repeatTimes = 1000
+    computeRunningTime {
+        repeat(repeatTimes) {
+            layout.goAlgo()
+            if (it % 100 == 0) print("$it..")
+        }.run { layout.endAlgo() }
+    }.run { println("\nCompleted layout after $repeatTimes iterations") }
 
 
 //    val previewController = Lookup.getDefault().lookup(PreviewController::class.java)
@@ -95,21 +105,24 @@ fun prettyGraphGenerate(_year: Int) {
 //    previewModel.properties.applyPreset(DefaultCurved())
 //    previewModel.properties.putValue(PreviewProperty.SHOW_NODE_LABELS, false)
 
+    val pathname = "${startYear}_${endYear}_${System.currentTimeMillis()}.gexf"
     val ec = Lookup.getDefault().lookup(ExportController::class.java).apply {
         try {
-            exportFile(File("19$year.gexf"))
+            exportFile(File(pathname))
         } catch (ex: IOException) {
             ex.printStackTrace()
             return
         }
     }
 
-    println("Exported")
+    println("Exported as '$pathname'")
     println("\nALL DONE")
 }
 
 
 fun main() {
-    val year = readLine()?.toInt()!! % 100
-    prettyGraphGenerate(year)
+    val scanner = Scanner(System.`in`)
+    val startYear = scanner.nextInt()
+    val endYear = scanner.nextInt()
+    prettyGraphGenerate(startYear, endYear)
 }

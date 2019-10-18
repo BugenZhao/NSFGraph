@@ -9,9 +9,9 @@ import org.gephi.project.api.ProjectController
 import org.openide.util.Lookup
 
 
-fun graphGenerate(year: Int): ProjectController {
-    val (awards, institutions, instruments, institutionRel, instrumentRel) = dataProcess(year);
-    println("Start to generate the graph... (19$year)")
+fun graphGenerate(startYear: Int, endYear: Int): ProjectController {
+    val (awards, institutions, instruments, institutionRel, instrumentRel) = dataProcess(startYear,endYear);
+    println("Start to generate the graph...")
 
     val pc = Lookup.getDefault().lookup(ProjectController::class.java).apply { newProject() }
     val workspace = pc.currentWorkspace
@@ -23,32 +23,43 @@ fun graphGenerate(year: Int): ProjectController {
     val instrumentNodes = mutableMapOf<Instrument, Node>()
 
 
-    graphModel.nodeTable.addColumn("type", String::class.java)
+    graphModel.nodeTable.run {
+        addColumn("type", String::class.java)
+        addColumn("effectiveDate", String::class.java)
+        addColumn("expirationDate", String::class.java)
+    }
 
     awards.forEach {
         val node = graphModel.factory().newNode(it.id.toString()).apply {
             label = it.title
-            setAttribute("type", "Award");
+            setAttribute("type", "Award")
+            setAttribute("effectiveDate", it.effectiveDate)
+            setAttribute("expirationDate", it.expirationDate)
+//            val start = it.effectiveDate.split('/')[2].toDouble()
+//            val end = it.expirationDate.split('/')[2].toDouble()
+//            addInterval(Interval(start, end))
         }
         awardNodes[it] = node
         undirectedGraph.addNode(node)
     }
     institutions.forEach {
-        val node = graphModel.factory().newNode(it.id.toString()).apply {
-            label = it.name
-            setAttribute("type", "Institution");
-        }
         if (institutionNodes[it] == null) {
+            val node = graphModel.factory().newNode(it.id.toString()).apply {
+                label = it.name
+                setAttribute("type", "Institution")
+//                addInterval(Interval.INFINITY_INTERVAL)
+            }
             institutionNodes[it] = node
             undirectedGraph.addNode(node)
         }
     }
     instruments.forEach {
-        val node = graphModel.factory().newNode(it.id.toString()).apply {
-            label = it.value
-            setAttribute("type", "Instrument");
-        }
         if (instrumentNodes[it] == null) {
+            val node = graphModel.factory().newNode(it.id.toString()).apply {
+                label = it.value
+                setAttribute("type", "Instrument")
+//                addInterval(Interval.INFINITY_INTERVAL)
+            }
             instrumentNodes[it] = node
             undirectedGraph.addNode(node)
         }

@@ -8,15 +8,15 @@ import java.io.IOException
 
 
 fun main() {
-    val year = readLine()?.toInt()!! % 100
+    val year = readLine()?.toInt()!!
 
-    val pc = graphGenerate(year);
+    val pc = graphGenerate(year, year);
     val workspace = pc.currentWorkspace
     val graphModel = Lookup.getDefault().lookup(GraphController::class.java).getGraphModel(workspace)
 
     val ec = Lookup.getDefault().lookup(ExportController::class.java).apply {
         try {
-            exportFile(File("19$year.gexf"))
+            exportFile(File("$year.gexf"))
         } catch (ex: IOException) {
             ex.printStackTrace()
             return
