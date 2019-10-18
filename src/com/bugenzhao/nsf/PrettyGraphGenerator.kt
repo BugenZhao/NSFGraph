@@ -14,14 +14,17 @@ import org.gephi.layout.plugin.forceAtlas2.ForceAtlas2
 import org.openide.util.Lookup
 import java.io.File
 import java.io.IOException
-import java.util.*
+import java.util.Scanner
 
 
 fun prettyGraphGenerate(startYear: Int, endYear: Int = startYear) {
     require(endYear >= startYear)
     var pc = graphGenerate(startYear, endYear);
     if (endYear > startYear) {
+        println("\n[DYNAMIC MODE]")
         pc = toDynamic(pc)
+    } else {
+        println("\n[CLASSIC MODE]")
     }
     val workspace = pc.currentWorkspace
     val graphModel = Lookup.getDefault().lookup(GraphController::class.java).getGraphModel(workspace)
@@ -97,7 +100,7 @@ fun prettyGraphGenerate(startYear: Int, endYear: Int = startYear) {
             layout.goAlgo()
             if (it % 100 == 0) print("$it..")
         }.run { layout.endAlgo() }
-    }.run { println("\nCompleted layout after $repeatTimes iterations") }
+    }.run { println("Completed layout after $repeatTimes iterations") }
 
 
 //    val previewController = Lookup.getDefault().lookup(PreviewController::class.java)
