@@ -3,25 +3,26 @@ package com.bugenzhao.nsf
 import com.mysql.cj.jdbc.MysqlDataSource
 import java.sql.ResultSet
 
-fun nsfConnect(startYear: Int, endYear: Int): ResultSet {
-    val nsfServer = SQLServer()
-    println("Connecting to ${nsfServer.serverName}...")
+object NsfConnector {
+    fun nsfConnect(startYear: Int, endYear: Int): ResultSet {
+        val nsfServer = SQLServer
+        println("Connecting to ${nsfServer.serverName}...")
 
-    val dataSource = MysqlDataSource().apply {
-        serverName = nsfServer.serverName
-        port = nsfServer.port
-        user = nsfServer.user
-        password = nsfServer.password
-        characterEncoding = nsfServer.characterEncoding
-    }
-    val conn = dataSource.connection
-    println("Connected")
+        val dataSource = MysqlDataSource().apply {
+            serverName = nsfServer.serverName
+            port = nsfServer.port
+            user = nsfServer.user
+            password = nsfServer.password
+            characterEncoding = nsfServer.characterEncoding
+        }
+        val conn = dataSource.connection
+        println("Connected")
 
-    println("Fetching data... ($startYear..$endYear)")
-    val stmt = conn.createStatement()
-    return stmt.run {
-        execute("use acmDB;")
-        executeQuery("""
+        println("Fetching data... ($startYear..$endYear)")
+        val stmt = conn.createStatement()
+        return stmt.run {
+            execute("use acmDB;")
+            executeQuery("""
             SELECT DISTINCT
                 a.ID,
                 a.Title,
@@ -41,5 +42,7 @@ fun nsfConnect(startYear: Int, endYear: Int): ResultSet {
                 STR_TO_DATE( a.EffectiveDate, '%m/%d/%Y' ) <= STR_TO_DATE( '12/31/$endYear', '%m/%d/%Y' ) 
                 AND STR_TO_DATE( a.ExpirationDate, '%m/%d/%Y' ) >= STR_TO_DATE( '01/01/$startYear', '%m/%d/%Y' );
         """.trimIndent())
+        }
     }
 }
+

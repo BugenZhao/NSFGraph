@@ -35,7 +35,7 @@ fun main() {
 
 //    val dynamicProcessor = MultiProcessor()
 //    dynamicProcessor.setDateMode(false)    //Set 'true' if you set real dates (ex: yyyy-mm-dd), it's double otherwise
-//    dynamicProcessor.setLabelmatching(true)   //Set 'true' if node matching is done on labels instead of ids
+//    dynamicProcessor.setLabelMatching(true)   //Set 'true' if node matching is done on labels instead of ids
 
     //Process the container using the MergeProcessor
     importController.process(containers, MergeProcessor(), workspace)

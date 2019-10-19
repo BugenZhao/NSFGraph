@@ -10,7 +10,7 @@ import java.io.IOException
 fun main() {
     val year = readLine()?.toInt()!!
 
-    val pc = graphGenerate(year, year);
+    val pc = BaseGenerator.graphGenerate(year, year)
     val workspace = pc.currentWorkspace
     val graphModel = Lookup.getDefault().lookup(GraphController::class.java).getGraphModel(workspace)
 
