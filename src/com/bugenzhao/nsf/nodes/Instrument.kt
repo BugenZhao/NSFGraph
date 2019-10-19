@@ -1,4 +1,6 @@
 package com.bugenzhao.nsf.nodes
 
-data class Instrument(val id: Int, val value: String) : DataNode() {
+data class Instrument(override val id: Int, val value: String) : DataNode {
+    override val type: String
+        get() = "Instrument"
 }

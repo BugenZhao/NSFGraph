@@ -1,4 +1,6 @@
 package com.bugenzhao.nsf.nodes
 
-open class DataNode {
+interface DataNode {
+    val type: String
+    val id: Int
 }
