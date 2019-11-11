@@ -1,4 +1,4 @@
-package com.bugenzhao.nsf
+package com.bugenzhao.nsfc
 
 import com.bugenzhao.nsf.utils.computeRunningTime
 import com.bugenzhao.nsfc.BaseGenerator

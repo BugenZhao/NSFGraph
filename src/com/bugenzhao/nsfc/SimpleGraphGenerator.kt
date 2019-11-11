@@ -1,4 +1,4 @@
-package com.bugenzhao.nsf
+package com.bugenzhao.nsfc
 
 import com.bugenzhao.nsfc.BaseGenerator
 import org.gephi.graph.api.GraphController
